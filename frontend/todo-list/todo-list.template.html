@@ -24,7 +24,12 @@
         class="badge badge-pill {{todo.complete ? 'badge-success' : 'badge-danger' }} d-flex align-items-center"
         >{{todo.complete ? "Done" : "Todo"}}</span
       >
-      <span class="w-75">{{todo.todo}}</span>
+      <span
+        ng-keyDown="$ctrl.update($event, todo.id)"
+        contenteditable
+        class="w-75"
+        >{{todo.todo}}</span
+      >
       <span ng-click="$ctrl.delete(todo.id)" class="trash">
         <svg
           width="1em"

@@ -1,20 +1,8 @@
 angular.module('todoList').component('todoList', {
   templateUrl: 'todo-list/todo-list.template.html',
   controller: function TodoListController() {
-    this.sort = todos => {
-      if (todos) {
-        return todos.sort((a, b) => {
-          if (a.complete) {
-            return -1;
-          } else {
-            return 1;
-          }
-        });
-      }
-    };
-
     this.todo = '';
-    this.todos = this.sort(JSON.parse(localStorage.getItem('todos'))) || [];
+    this.todos = JSON.parse(localStorage.getItem('todos')) || [];
 
     this.toggle = todo => {
       const todos = JSON.parse(localStorage.getItem('todos'));
@@ -25,7 +13,7 @@ angular.module('todoList').component('todoList', {
         }
         return t;
       });
-      localStorage.setItem('todos', JSON.stringify(this.sort(updatedTodos)));
+      localStorage.setItem('todos', JSON.stringify(updatedTodos));
       // but also update in memory
       todo.complete = !todo.complete;
     };
@@ -47,7 +35,22 @@ angular.module('todoList').component('todoList', {
       const currentTodos = JSON.parse(localStorage.getItem('todos'));
       const updatedTodos = currentTodos.filter(t => t.id !== id);
       localStorage.setItem('todos', JSON.stringify(updatedTodos));
-      this.todos = this.todos.filter(t => t.id !== id);
+      this.todos = updatedTodos;
+    };
+
+    this.update = ($event, id) => {
+      if ($event.key === 'Enter') {
+        $event.target.blur();
+        const currentTodos = JSON.parse(localStorage.getItem('todos'));
+        const updatedTodos = currentTodos.map(t => {
+          if (t.id === id) {
+            t.todo = $event.target.innerText;
+          }
+          return t;
+        });
+        this.todos = updatedTodos;
+        localStorage.setItem('todos', JSON.stringify(updatedTodos));
+      }
     };
   }
 });
