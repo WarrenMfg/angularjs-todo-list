@@ -7,17 +7,38 @@
       <input
         ng-model="$ctrl.todo"
         type="text"
-        class="form-control"
+        class="form-control shadow-none"
         placeholder="Enter a todo item"
       />
     </div>
   </form>
 
+  <div class="d-flex justify-content-between align-items-center pl-4">
+    <div class="d-flex justify-content-between align-items-center w-25">
+      <strong>Sort:</strong>
+      <span
+        ng-click="$ctrl.sortByStatus()"
+        class="sortBy badge badge-pill badge-primary"
+        >Status</span
+      >
+      <span
+        ng-click="$ctrl.sortByDate()"
+        class="sortBy badge badge-pill badge-primary"
+        >Date</span
+      >
+    </div>
+    <input
+      ng-model="$ctrl.filter"
+      class="form-control w-25 shadow-none"
+      type="text"
+      placeholder="Filter"
+    />
+  </div>
+
   <ul class="list-group-flush pl-0">
     <li
-      ng-orderBy
-      ng-repeat="todo in $ctrl.todos | orderBy:'complete' track by todo.id"
-      class="list-group-item d-flex justify-content-between"
+      ng-repeat="todo in $ctrl.todos | orderBy:$ctrl.sortBy | filter:{todo:$ctrl.filter} track by todo.id"
+      class="list-group-item d-flex justify-content-between align-items-center"
     >
       <span
         ng-click="$ctrl.toggle(todo)"

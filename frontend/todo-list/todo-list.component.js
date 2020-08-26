@@ -1,6 +1,8 @@
 angular.module('todoList').component('todoList', {
   templateUrl: 'todo-list/todo-list.template.html',
   controller: function TodoListController() {
+    this.sortBy = 'complete';
+    this.filter = '';
     this.todo = '';
     this.todos = JSON.parse(localStorage.getItem('todos')) || [];
 
@@ -50,6 +52,22 @@ angular.module('todoList').component('todoList', {
         });
         this.todos = updatedTodos;
         localStorage.setItem('todos', JSON.stringify(updatedTodos));
+      }
+    };
+
+    this.sortByStatus = () => {
+      if (this.sortBy === 'complete') {
+        this.sortBy = '-complete';
+      } else {
+        this.sortBy = 'complete';
+      }
+    };
+
+    this.sortByDate = () => {
+      if (this.sortBy === '-id') {
+        this.sortBy = 'id';
+      } else {
+        this.sortBy = '-id';
       }
     };
   }
